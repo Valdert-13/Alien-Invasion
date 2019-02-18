@@ -35,12 +35,13 @@ def check_events(ai_settings,screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
-def updete_screen (ai_settings, screen, ship, bullets):
+def updete_screen (ai_settings, screen, ship, alien, bullets):
     """перерисовка экрана при каджом действии"""
     screen.fill(ai_settings.bg_color)
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitame()
+    alien.blitme()
 
 def update_bullets(bullets):
     """обновляет позиции пули и уничтажает старые пули"""
