@@ -26,7 +26,7 @@ def check_keyup_events (event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(ai_settings,screen, stats, play_button, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets):
     """обрабатывает нажатие клавиш клавиатуры и мыши"""
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -39,11 +39,20 @@ def check_events(ai_settings,screen, stats, play_button, ship, bullets):
 
         elif event.type == pygame.MOUSEMOTION:
             mose_x, mose_y = pygame.mouse.get_pos()
-            check_play_button (stats, play_button, mose_x, mose_y)
+            check_play_button (ai_settings, screen, stats, play_button, ship, aliens, bullets, mose_x, mose_y)
 
-def check_play_button (stats, play_button, mose_x, mose_y):
-    if play_button.rect.collidepoint (mose_x, mose_y):
+def check_play_button (ai_settings, screen, stats, play_button, ship, aliens, bullets, mose_x, mose_y):
+    button_cliced =  play_button.rect.collidepoint
+    if button_cliced and play_button.rect.collidepoint (mose_x, mose_y):
+        pygame.mouse.set_visible(False)
+        stats.reset_stats()
         stats.game_active = True
+
+        aliens.empty
+        bullets.empty
+
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship
 
 
 def update_screen (ai_settings, screen,stats, ship, aliens, bullets, play_button):
@@ -129,6 +138,7 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         sleep(0.5)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 def check_aliens_bottom (ai_settings, stats, screen, ship, aliens, bullets):
     screen_rect = screen.get_rect()
