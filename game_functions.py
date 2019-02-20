@@ -42,8 +42,9 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
             check_play_button (ai_settings, screen, stats, play_button, ship, aliens, bullets, mose_x, mose_y)
 
 def check_play_button (ai_settings, screen, stats, play_button, ship, aliens, bullets, mose_x, mose_y):
-    button_cliced =  play_button.rect.collidepoint
-    if button_cliced and play_button.rect.collidepoint (mose_x, mose_y):
+    button_cliced =  play_button.rect.collidepoint (mose_x, mose_y)
+    if button_cliced and not stats.game_active:
+        ai_settings.initialize_dynamix_settingsself()
         pygame.mouse.set_visible(False)
         stats.reset_stats()
         stats.game_active = True
@@ -55,16 +56,17 @@ def check_play_button (ai_settings, screen, stats, play_button, ship, aliens, bu
         ship.center_ship
 
 
-def update_screen (ai_settings, screen,stats, ship, aliens, bullets, play_button):
+def update_screen (ai_settings, screen,stats, sb, ship, aliens, bullets, play_button):
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitame()
     aliens.draw(screen)
+    sb.show_score()
     if not stats.game_active:
         play_button.draw_button()
     pygame.display.flip()
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """обновляет позиции пули и уничтажает старые пули"""
     bullets.update()
     """перерисовка экрана при каджом действии"""
@@ -72,12 +74,17 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len (aliens)
+            sb.prep_score()
     if len(aliens) == 0:
         bullets.empty()
+        ai_settings.increase_speed()
         create_fleet(ai_settings,screen,ship,aliens)
 
 def get_number_aliens_x (ai_settings, alien_whidth):
