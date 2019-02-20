@@ -23,7 +23,7 @@ class Settings():
     def initialize_dynamix_settingsself(self):
         self.ship_speed_factor = 1.5
         self.bullet_speed_factor = 1
-        self.alien_speed_factor = 0.5
+        self.alien_speed_factor = 5
         self.fleet_direction = 1
         self.alien_points = 50
 
