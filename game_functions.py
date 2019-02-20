@@ -26,7 +26,7 @@ def check_keyup_events (event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(ai_settings,screen, ship, bullets):
+def check_events(ai_settings,screen, stats, play_button, ship, bullets):
     """обрабатывает нажатие клавиш клавиатуры и мыши"""
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -37,11 +37,23 @@ def check_events(ai_settings,screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
-def updete_screen (ai_settings, screen, ship, aliens, bullets):
+        elif event.type == pygame.MOUSEMOTION:
+            mose_x, mose_y = pygame.mouse.get_pos()
+            check_play_button (stats, play_button, mose_x, mose_y)
+
+def check_play_button (stats, play_button, mose_x, mose_y):
+    if play_button.rect.collidepoint (mose_x, mose_y):
+        stats.game_active = True
+
+
+def update_screen (ai_settings, screen,stats, ship, aliens, bullets, play_button):
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitame()
     aliens.draw(screen)
+    if not stats.game_active:
+        play_button.draw_button()
+    pygame.display.flip()
 
 def update_bullets(ai_settings, screen, ship, aliens, bullets):
     """обновляет позиции пули и уничтажает старые пули"""
