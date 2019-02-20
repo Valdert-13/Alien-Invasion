@@ -1,9 +1,11 @@
 import pygame
+from pygame.sprite import Sprite
 
 class Ship():
 
     def __init__(self, ai_settings, screen ):
         """Инициализирует корабль и создает первоночальную позицию"""
+        super(Ship, self).__init__()
         self.screen = screen
         self.image = pygame.image.load('images/ship.bmp')
         self.rect = self.image.get_rect()

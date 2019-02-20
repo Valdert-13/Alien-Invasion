@@ -10,7 +10,7 @@ class Settings():
         self.ship_limit = 3
 #         создание настроек пули
 
-        self.bullet_wight = 300
+        self.bullet_wight = 3
         self.bullet_height = 15
         self.bullet_color = 60, 60, 60
         self.bullets_allower = 3
@@ -31,4 +31,4 @@ class Settings():
         self.ship_speed_factor *= self.speedup_scale
         self.bullet_speed_factor *= self.speedup_scale
         self.alien_speed_factor *= self.speedup_scale
-        self.alien_points *= self.speedup_scale
+        self.alien_points = int(self.speedup_scale * self.alien_points )
