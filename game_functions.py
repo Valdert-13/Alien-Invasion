@@ -140,14 +140,15 @@ def update_aliens (ai_settings, screen, stats, sb, ship, aliens, bullets):
         ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets)
     check_aliens_bottom(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
-def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
-    if stats.ships_left >0:
-        stats.ship_left -= 1
+def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets):
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
 
         sb.prep_ships()
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
+
     aliens.empty()
     bullets.empty()
 
